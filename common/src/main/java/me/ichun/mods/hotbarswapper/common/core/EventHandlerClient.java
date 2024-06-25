@@ -7,6 +7,7 @@ import me.ichun.mods.ichunutil.client.key.KeyListener;
 import me.ichun.mods.ichunutil.common.entity.EntityHelper;
 import me.ichun.mods.ichunutil.common.iChunUtil;
 import me.ichun.mods.ichunutil.common.util.EventCalendar;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -338,7 +339,7 @@ public abstract class EventHandlerClient
         return null;
     }
 
-    public void renderItemHotbar(GuiGraphics graphics, float partialTick)
+    public void renderItemHotbar(GuiGraphics graphics, DeltaTracker deltaTracker)
     {
         Minecraft mc = Minecraft.getInstance();
         if(mc.getCameraEntity() instanceof Player player)
@@ -389,7 +390,7 @@ public abstract class EventHandlerClient
                         graphics.pose().scale(scale, scale, 1F);
                         if(EventCalendar.isEventDay())
                         {
-                            graphics.pose().rotateAround(Axis.ZP.rotationDegrees((player.tickCount + partialTick) * 4F), 0F, 1F, 0F);
+                            graphics.pose().rotateAround(Axis.ZP.rotationDegrees((player.tickCount + deltaTracker.getGameTimeDeltaPartialTick(false)) * 4F), 0F, 1F, 0F);
                         }
                         //                    if(items.get(i).isEmpty())
                         //                    {
