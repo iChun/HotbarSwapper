@@ -163,6 +163,11 @@ public abstract class EventHandlerClient
         }
         else
         {
+            if(HotbarSwapper.config.ignoredSlots.contains(slotIndex))
+            {
+                return false;
+            }
+
             int index = rowIndex * 9 + slotIndex;
             if(index < items.size())
             {
