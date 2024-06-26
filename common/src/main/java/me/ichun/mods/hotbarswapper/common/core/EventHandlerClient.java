@@ -147,6 +147,12 @@ public abstract class EventHandlerClient
             boolean isNotEmpty = false;
             for(int i = 9 * rowIndex; i < items.size() && i < 9 * (rowIndex + 1); i++)
             {
+                int index = i - (9 * rowIndex);
+                if(HotbarSwapper.config.ignoredSlots.contains(index))
+                {
+                    continue;
+                }
+
                 ItemStack itemStack = items.get(i);
                 if(!itemStack.isEmpty())
                 {
@@ -158,6 +164,11 @@ public abstract class EventHandlerClient
         }
         else
         {
+            if(HotbarSwapper.config.ignoredSlots.contains(slotIndex))
+            {
+                return false;
+            }
+
             int index = rowIndex * 9 + slotIndex;
             if(index < items.size())
             {
