@@ -1,6 +1,8 @@
 package me.ichun.mods.hotbarswapper.common.core;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.ichun.mods.hotbarswapper.common.HotbarSwapper;
@@ -11,7 +13,6 @@ import me.ichun.mods.ichunutil.common.util.EventCalendar;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -350,7 +351,7 @@ public abstract class EventHandlerClient
         return null;
     }
 
-    public void renderItemHotbar(PoseStack stack, float partialTick)
+    public void renderItemHotbar(PoseStack stackUnused, float partialTick)
     {
         Minecraft mc = Minecraft.getInstance();
         if(mc.getCameraEntity() instanceof Player player)
@@ -398,20 +399,24 @@ public abstract class EventHandlerClient
 
                         float offset = scale * 10;
 
+                        PoseStack stack = RenderSystem.getModelViewStack();
+
                         stack.pushPose();
                         stack.translate(x + offset, y + offset, 100F);
                         stack.scale(scale, scale, 1F);
                         if(EventCalendar.isEventDay())
                         {
-                            stack.rotateAround(Axis.ZP.rotationDegrees((player.tickCount + partialTick) * 4F), 0F, 1F, 0F);
+                            stack.mulPose(Axis.ZP.rotationDegrees((player.tickCount + partialTick) * 4F));
                         }
                         //                    if(items.get(i).isEmpty())
                         //                    {
                         //                        graphics.fill(-10, -10, 6, 6, 100, 0x44000000);
                         //                    }
-                        mc.getItemRenderer().renderAndDecorateItem(stack, player, items.get(i), (int)(-offset / scale), (int)(-offset / scale), seed++);
-                        mc.getItemRenderer().renderGuiItemDecorations(stack, mc.font, items.get(i), (int)(-offset / scale), (int)(-offset / scale));
+                        RenderSystem.applyModelViewMatrix();
+                        mc.getItemRenderer().renderAndDecorateItem(player, items.get(i), (int)(-offset / scale), (int)(-offset / scale), seed++);
+                        mc.getItemRenderer().renderGuiItemDecorations(mc.font, items.get(i), (int)(-offset / scale), (int)(-offset / scale));
                         stack.popPose();
+                        RenderSystem.applyModelViewMatrix();
                     }
                 }
             }
