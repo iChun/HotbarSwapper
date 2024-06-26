@@ -1,5 +1,6 @@
 package me.ichun.mods.hotbarswapper.common.core;
 
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.ichun.mods.hotbarswapper.common.HotbarSwapper;
@@ -10,7 +11,7 @@ import me.ichun.mods.ichunutil.common.util.EventCalendar;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -349,7 +350,7 @@ public abstract class EventHandlerClient
         return null;
     }
 
-    public void renderItemHotbar(GuiGraphics graphics, float partialTick)
+    public void renderItemHotbar(PoseStack stack, float partialTick)
     {
         Minecraft mc = Minecraft.getInstance();
         if(mc.getCameraEntity() instanceof Player player)
@@ -379,14 +380,16 @@ public abstract class EventHandlerClient
 
                 if(!items.stream().allMatch(ItemStack::isEmpty))
                 {
+                    Window window = mc.getWindow();
+
                     //Taken from Gui.renderItemHotbar
-                    int halfWidth = graphics.guiWidth() / 2;
+                    int halfWidth = window.getGuiScaledWidth() / 2;
                     int seed = 1;
 
                     for(int i = 0; i < items.size(); i++)
                     {
                         double x = halfWidth - 90 + i * 20 + 2;
-                        double y = graphics.guiHeight() - 16 - 3;
+                        double y = window.getGuiScaledHeight() - 16 - 3;
 
                         //our additions
                         float scale = (float)HotbarSwapper.config.itemScale;
@@ -395,20 +398,20 @@ public abstract class EventHandlerClient
 
                         float offset = scale * 10;
 
-                        graphics.pose().pushPose();
-                        graphics.pose().translate(x + offset, y + offset, 100F);
-                        graphics.pose().scale(scale, scale, 1F);
+                        stack.pushPose();
+                        stack.translate(x + offset, y + offset, 100F);
+                        stack.scale(scale, scale, 1F);
                         if(EventCalendar.isEventDay())
                         {
-                            graphics.pose().rotateAround(Axis.ZP.rotationDegrees((player.tickCount + partialTick) * 4F), 0F, 1F, 0F);
+                            stack.rotateAround(Axis.ZP.rotationDegrees((player.tickCount + partialTick) * 4F), 0F, 1F, 0F);
                         }
                         //                    if(items.get(i).isEmpty())
                         //                    {
                         //                        graphics.fill(-10, -10, 6, 6, 100, 0x44000000);
                         //                    }
-                        graphics.renderItem(player, items.get(i), (int)(-offset / scale), (int)(-offset / scale), seed++);
-                        graphics.renderItemDecorations(mc.font, items.get(i), (int)(-offset / scale), (int)(-offset / scale));
-                        graphics.pose().popPose();
+                        mc.getItemRenderer().renderAndDecorateItem(stack, player, items.get(i), (int)(-offset / scale), (int)(-offset / scale), seed++);
+                        mc.getItemRenderer().renderGuiItemDecorations(stack, mc.font, items.get(i), (int)(-offset / scale), (int)(-offset / scale));
+                        stack.popPose();
                     }
                 }
             }
