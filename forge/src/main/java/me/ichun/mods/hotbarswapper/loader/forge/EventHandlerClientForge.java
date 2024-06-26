@@ -11,7 +11,7 @@ public class EventHandlerClientForge extends EventHandlerClient
         MinecraftForge.EVENT_BUS.addListener(this::onMouseScrollEvent);
     }
 
-    private void onMouseScrollEvent(InputEvent.MouseScrollingEvent event)
+    private void onMouseScrollEvent(InputEvent.MouseScrollEvent event)
     {
         if(onMouseScroll(0.0D, event.getScrollDelta()))
         {

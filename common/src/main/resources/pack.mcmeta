@@ -3,6 +3,6 @@
       "description": {
          "text": "${mod_name}"
       },
-      "pack_format": 9
+      "pack_format": 8
    }
 }

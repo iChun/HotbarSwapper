@@ -141,8 +141,8 @@ dependencies {
         // Mod Menu for Fabric
         modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-        //Lazy DFU for 1.19+
-        modImplementation "curse.maven:lazydfu-433518:3821870"
+        //Lazy DFU for 1.18.2
+        modImplementation "curse.maven:lazydfu-433518:3209972"
     }
 }
 
@@ -406,7 +406,7 @@ publisher {
     setProjectVersion("${project.mod_version}")
 
     // The supported game versions
-    setGameVersions("1.19", "1.19.1", "${project.minecraft_version}")
+    setGameVersions("1.18", "1.18.1", "${project.minecraft_version}")
 
     // The modloaders your upload supports.
     // This can also be an Enum from ModLoader,

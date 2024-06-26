@@ -10,12 +10,13 @@ import me.ichun.mods.ichunutil.client.key.KeyListener;
 import me.ichun.mods.ichunutil.common.entity.EntityHelper;
 import me.ichun.mods.ichunutil.common.iChunUtil;
 import me.ichun.mods.ichunutil.common.util.EventCalendar;
+import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
@@ -112,7 +113,7 @@ public abstract class EventHandlerClient
 
             if(holdingSwapSlotKey && HotbarSwapper.config.ignoredSlots.contains(Minecraft.getInstance().player.getInventory().selected))
             {
-                Minecraft.getInstance().player.sendSystemMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1));
+                Minecraft.getInstance().player.sendMessage(new TranslatableComponent("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1), Util.NIL_UUID);
                 return true;
             }
 
@@ -209,7 +210,7 @@ public abstract class EventHandlerClient
         }
         else
         {
-            Minecraft.getInstance().player.sendSystemMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1));
+            Minecraft.getInstance().player.sendMessage(new TranslatableComponent("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1), Util.NIL_UUID);
         }
     }
 
@@ -231,11 +232,11 @@ public abstract class EventHandlerClient
         if(!HotbarSwapper.config.ignoredSlots.removeIf(i -> i == Minecraft.getInstance().player.getInventory().selected))
         {
             HotbarSwapper.config.ignoredSlots.add(Minecraft.getInstance().player.getInventory().selected);
-            Minecraft.getInstance().player.sendSystemMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.add", Minecraft.getInstance().player.getInventory().selected + 1));
+            Minecraft.getInstance().player.sendMessage(new TranslatableComponent("chat.hotbarswapper.ignoreSlots.add", Minecraft.getInstance().player.getInventory().selected + 1), Util.NIL_UUID);
         }
         else
         {
-            Minecraft.getInstance().player.sendSystemMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.remove", Minecraft.getInstance().player.getInventory().selected + 1));
+            Minecraft.getInstance().player.sendMessage(new TranslatableComponent("chat.hotbarswapper.ignoreSlots.remove", Minecraft.getInstance().player.getInventory().selected + 1), Util.NIL_UUID);
         }
         HotbarSwapper.config.save();
     }
