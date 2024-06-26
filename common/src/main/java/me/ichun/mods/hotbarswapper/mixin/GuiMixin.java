@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Gui.class)
 public abstract class GuiMixin
 {
-    @Inject(method = "renderItemHotbar", at = @At("TAIL"))
-    public void hotbarswapper$renderItemHotbar(GuiGraphics graphics, float partialTick, CallbackInfo ci)
+    @Inject(method = "renderHotbar", at = @At("TAIL"))
+    public void hotbarswapper$renderHotbar(float partialTick, GuiGraphics graphics, CallbackInfo ci)
     {
         HotbarSwapper.eventHandlerClient.renderItemHotbar(graphics, partialTick);
     }
