@@ -3,7 +3,7 @@ package me.ichun.mods.hotbarswapper.common.core;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import me.ichun.mods.hotbarswapper.common.HotbarSwapper;
 import me.ichun.mods.ichunutil.client.key.KeyListener;
@@ -406,7 +406,7 @@ public abstract class EventHandlerClient
                         stack.scale(scale, scale, 1F);
                         if(EventCalendar.isEventDay())
                         {
-                            stack.mulPose(Axis.ZP.rotationDegrees((player.tickCount + partialTick) * 4F));
+                            stack.mulPose(Vector3f.ZP.rotationDegrees((player.tickCount + partialTick) * 4F));
                         }
                         //                    if(items.get(i).isEmpty())
                         //                    {
