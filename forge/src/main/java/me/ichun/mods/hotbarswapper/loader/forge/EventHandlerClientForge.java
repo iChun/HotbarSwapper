@@ -13,7 +13,7 @@ public class EventHandlerClientForge extends EventHandlerClient
 
     private void onMouseScrollEvent(InputEvent.MouseScrollingEvent event)
     {
-        if(onMouseScroll(event.getDeltaX(), event.getDeltaY()))
+        if(onMouseScroll(0.0D, event.getScrollDelta()))
         {
             event.setCanceled(true);
         }
