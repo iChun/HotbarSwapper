@@ -36,6 +36,6 @@ public class LoaderNeoForge extends HotbarSwapper
 
         eventHandlerClient = new EventHandlerClientNeoForge();
 
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (minecraft, screen) -> new WorkspaceConfigs(screen));
+        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (modContainer, screen) -> new WorkspaceConfigs(screen));
     }
 }
