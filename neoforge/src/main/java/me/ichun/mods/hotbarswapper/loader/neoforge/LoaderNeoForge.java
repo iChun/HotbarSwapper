@@ -12,7 +12,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
-@Mod(HotbarSwapper.MOD_ID)
+@Mod(value = HotbarSwapper.MOD_ID, dist = Dist.CLIENT)
 public class LoaderNeoForge extends HotbarSwapper
 {
     public LoaderNeoForge(IEventBus modEventBus)
