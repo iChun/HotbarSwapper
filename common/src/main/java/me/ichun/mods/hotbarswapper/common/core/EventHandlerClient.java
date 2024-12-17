@@ -310,16 +310,23 @@ public abstract class EventHandlerClient
         Options options = Minecraft.getInstance().options;
         if(options == null) return; //we're running the code too early
 
-        KeyMapping key = findKey(HotbarSwapper.config.swapKeyListen);
-        if(key == null)
+        listenerHoldKey = null; //this allows us to unset the key if a blank string
+
+        if(!HotbarSwapper.config.swapKeyListen.isEmpty())
         {
-            HotbarSwapper.LOGGER.warn("Could not find key called \"{}\"! Defaulting to sprint key!", HotbarSwapper.config.swapKeyListen);
-            key = Minecraft.getInstance().options.keySprint;
+            KeyMapping key = findKey(HotbarSwapper.config.swapKeyListen);
+            if(key != null)
+            {
+                listenerHoldKey = new KeyListener(key,
+                    listener -> holdSwapKey(true),
+                    listener -> holdSwapKey(false));
+            }
+            else
+            {
+                //only warn if we can't find it, if it is left blank then intentionally disabling the key
+                HotbarSwapper.LOGGER.warn("Could not find key for swap key called \"{}\"!", HotbarSwapper.config.swapKeyListen);
+            }
         }
-        listenerHoldKey = new KeyListener(key,
-            listener -> holdSwapKey(true),
-            listener -> holdSwapKey(false)
-        );
     }
 
     public void findListenedSlotKey()
@@ -327,16 +334,23 @@ public abstract class EventHandlerClient
         Options options = Minecraft.getInstance().options;
         if(options == null) return; //we're running the code too early
 
-        KeyMapping key = findKey(HotbarSwapper.config.swapSlotListen);
-        if(key == null)
+        listenerSlotKey = null; //this allows us to unset the key if a blank string
+
+        if(!HotbarSwapper.config.swapSlotListen.isEmpty())
         {
-            HotbarSwapper.LOGGER.warn("Could not find key called \"{}\"! Defaulting to sneak key!", HotbarSwapper.config.swapSlotListen);
-            key = Minecraft.getInstance().options.keyShift;
+            KeyMapping key = findKey(HotbarSwapper.config.swapSlotListen);
+            if(key != null)
+            {
+                listenerSlotKey = new KeyListener(key,
+                    listener -> holdSwapSlotKey(true),
+                    listener -> holdSwapSlotKey(false)
+                );
+            }
+            else
+            {
+                HotbarSwapper.LOGGER.warn("Could not find key for swap slot key called \"{}\"!", HotbarSwapper.config.swapSlotListen);
+            }
         }
-        listenerSlotKey = new KeyListener(key,
-            listener -> holdSwapSlotKey(true),
-            listener -> holdSwapSlotKey(false)
-        );
     }
 
     public KeyMapping findKey(@NotNull String name)
