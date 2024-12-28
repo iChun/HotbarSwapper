@@ -111,7 +111,7 @@ public abstract class EventHandlerClient
 
             if(holdingSwapSlotKey && HotbarSwapper.config.ignoredSlots.contains(Minecraft.getInstance().player.getInventory().selected))
             {
-                Minecraft.getInstance().player.sendSystemMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1));
+                Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1), false);
                 return true;
             }
 
@@ -208,7 +208,7 @@ public abstract class EventHandlerClient
         }
         else
         {
-            Minecraft.getInstance().player.sendSystemMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1));
+            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1), false);
         }
     }
 
@@ -230,11 +230,11 @@ public abstract class EventHandlerClient
         if(!HotbarSwapper.config.ignoredSlots.removeIf(i -> i == Minecraft.getInstance().player.getInventory().selected))
         {
             HotbarSwapper.config.ignoredSlots.add(Minecraft.getInstance().player.getInventory().selected);
-            Minecraft.getInstance().player.sendSystemMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.add", Minecraft.getInstance().player.getInventory().selected + 1));
+            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.add", Minecraft.getInstance().player.getInventory().selected + 1), false);
         }
         else
         {
-            Minecraft.getInstance().player.sendSystemMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.remove", Minecraft.getInstance().player.getInventory().selected + 1));
+            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.remove", Minecraft.getInstance().player.getInventory().selected + 1), false);
         }
         HotbarSwapper.config.save();
     }
