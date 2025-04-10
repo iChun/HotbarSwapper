@@ -44,33 +44,19 @@ public class Config extends ConfigBase
     public int itemOffsetY = 20;
 
     @Prop(skip = true)
-    public KeyBind swapRowNext = new KeyBind(new KeyMapping("key.hotbarswapper.swapRowNext", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> {
-        while(HotbarSwapper.eventHandlerClient.addToIndex(1)) {}
-        HotbarSwapper.eventHandlerClient.doSwap(true);
-    }, null);
+    public KeyBind swapRowNext = new KeyBind(new KeyMapping("key.hotbarswapper.swapRowNext", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> HotbarSwapper.eventHandlerClient.onKeybindPressed(1, true), null);
 
     @Prop(skip = true)
-    public KeyBind swapRowPrev = new KeyBind(new KeyMapping("key.hotbarswapper.swapRowPrev", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> {
-        while(HotbarSwapper.eventHandlerClient.addToIndex(-1)) {}
-        HotbarSwapper.eventHandlerClient.doSwap(true);
-    }, null);
+    public KeyBind swapRowPrev = new KeyBind(new KeyMapping("key.hotbarswapper.swapRowPrev", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> HotbarSwapper.eventHandlerClient.onKeybindPressed(-1, true), null);
 
     @Prop(skip = true)
-    public KeyBind swapSlotNext = new KeyBind(new KeyMapping("key.hotbarswapper.swapSlotNext", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> {
-        while(HotbarSwapper.eventHandlerClient.addToIndex(1)) {}
-        HotbarSwapper.eventHandlerClient.doSwap(false);
-    }, null);
+    public KeyBind swapSlotNext = new KeyBind(new KeyMapping("key.hotbarswapper.swapSlotNext", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> HotbarSwapper.eventHandlerClient.onKeybindPressed(1, false), null);
 
     @Prop(skip = true)
-    public KeyBind swapSlotPrev = new KeyBind(new KeyMapping("key.hotbarswapper.swapSlotPrev", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> {
-        while(HotbarSwapper.eventHandlerClient.addToIndex(-1)) {}
-        HotbarSwapper.eventHandlerClient.doSwap(false);
-    }, null);
+    public KeyBind swapSlotPrev = new KeyBind(new KeyMapping("key.hotbarswapper.swapSlotPrev", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> HotbarSwapper.eventHandlerClient.onKeybindPressed(-1, false), null);
 
     @Prop(skip = true)
-    public KeyBind ignoreSlot = new KeyBind(new KeyMapping("key.hotbarswapper.ignoreSlot", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> {
-        HotbarSwapper.eventHandlerClient.toggleLockSlot();
-    }, null);
+    public KeyBind ignoreSlot = new KeyBind(new KeyMapping("key.hotbarswapper.ignoreSlot", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> HotbarSwapper.eventHandlerClient.toggleLockSlot(), null);
 
 
     public Config()
