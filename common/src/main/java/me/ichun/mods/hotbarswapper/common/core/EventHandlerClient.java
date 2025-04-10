@@ -105,6 +105,15 @@ public abstract class EventHandlerClient
         }
     }
 
+
+    public void onKeybindPressed(int index, boolean isRow)
+    {
+        if(HotbarSwapper.eventHandlerClient.addToIndex(index, isRow) && currentIndex != 0 || HotbarSwapper.eventHandlerClient.addToIndex(index, isRow))
+        {
+            HotbarSwapper.eventHandlerClient.doSwap(isRow);
+        }
+    }
+
     protected boolean onMouseScroll(double scrollX, double scrollY)
     {
         if(isHoldingKey())
@@ -124,7 +133,7 @@ public abstract class EventHandlerClient
             }
             if(addAmount != 0)
             {
-                addToIndex(addAmount);
+                addToIndex(addAmount, !holdingSwapSlotKey);
             }
 
             return true;
@@ -132,15 +141,24 @@ public abstract class EventHandlerClient
         return false;
     }
 
-    public boolean addToIndex(int addAmount)
+    public boolean addToIndex(int addAmount, boolean isRow) //returns true if a new index is found.
     {
+        int oldIndex = currentIndex;
+
         currentIndex = EntityHelper.wrap(currentIndex + addAmount, 0, 3);
 
-        while(currentIndex != 0 && HotbarSwapper.config.ignoreEmptySlots && !isNotEmpty(currentIndex, Minecraft.getInstance().player.getInventory().selected, !holdingSwapSlotKey))
+        int addAmountSignum = ((int)Math.signum(addAmount));
+        if(currentIndex == oldIndex) // you scrolled so much that it looped back onto the same value
         {
-            currentIndex = EntityHelper.wrap(currentIndex + ((int)Math.signum(addAmount)), 0, 3);
+            currentIndex = EntityHelper.wrap(currentIndex + addAmountSignum, 0, 3);
         }
-        return currentIndex == 0;
+
+        while((!isHoldingKey() || currentIndex != 0) && currentIndex != oldIndex && HotbarSwapper.config.ignoreEmptySlots && (!isNotEmpty(currentIndex, Minecraft.getInstance().player.getInventory().selected, isRow)))
+        {
+            currentIndex = EntityHelper.wrap(currentIndex + addAmountSignum, 0, 3);
+        }
+
+        return oldIndex != currentIndex;
     }
 
     private boolean isHoldingKey()
