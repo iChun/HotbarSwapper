@@ -118,7 +118,14 @@ public abstract class EventHandlerClient
             }
 
             int addAmount = (int)(HotbarSwapper.config.invertScrollDirection ? scrollY : -scrollY);
-            addToIndex(addAmount);
+            if(addAmount == 0)
+            {
+                addAmount = ((int)Math.signum(HotbarSwapper.config.invertScrollDirection ? scrollY : -scrollY));
+            }
+            if(addAmount != 0)
+            {
+                addToIndex(addAmount);
+            }
 
             return true;
         }
