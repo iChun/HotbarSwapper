@@ -14,6 +14,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.HashedStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
 import net.minecraft.sounds.SoundEvents;
@@ -118,9 +119,9 @@ public abstract class EventHandlerClient
         {
             possibleLock = false;
 
-            if(holdingSwapSlotKey && HotbarSwapper.config.ignoredSlots.contains(Minecraft.getInstance().player.getInventory().selected))
+            if(holdingSwapSlotKey && HotbarSwapper.config.ignoredSlots.contains(Minecraft.getInstance().player.getInventory().getSelectedSlot()))
             {
-                Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1), false);
+                Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().getSelectedSlot() + 1), false);
                 return true;
             }
 
@@ -151,7 +152,7 @@ public abstract class EventHandlerClient
             currentIndex = EntityHelper.wrap(currentIndex + addAmountSignum, 0, 3);
         }
 
-        while((!isHoldingKey() || currentIndex != 0) && currentIndex != oldIndex && HotbarSwapper.config.ignoreEmptySlots && (!isNotEmpty(currentIndex, Minecraft.getInstance().player.getInventory().selected, isRow)))
+        while((!isHoldingKey() || currentIndex != 0) && currentIndex != oldIndex && HotbarSwapper.config.ignoreEmptySlots && (!isNotEmpty(currentIndex, Minecraft.getInstance().player.getInventory().getSelectedSlot(), isRow)))
         {
             currentIndex = EntityHelper.wrap(currentIndex + addAmountSignum, 0, 3);
         }
@@ -166,7 +167,7 @@ public abstract class EventHandlerClient
 
     public boolean isNotEmpty(int rowIndex, int slotIndex, boolean isRow)
     {
-        NonNullList<ItemStack> items = Minecraft.getInstance().player.getInventory().items;
+        NonNullList<ItemStack> items = Minecraft.getInstance().player.getInventory().getNonEquipmentItems();
         if(isRow)
         {
             boolean isNotEmpty = false;
@@ -227,13 +228,13 @@ public abstract class EventHandlerClient
                 }
             }
         }
-        else if(!HotbarSwapper.config.ignoredSlots.contains(inventory.selected))
+        else if(!HotbarSwapper.config.ignoredSlots.contains(inventory.getSelectedSlot()))
         {
-            doSwap(player, inventory, inventory.selected);
+            doSwap(player, inventory, inventory.getSelectedSlot());
         }
         else
         {
-            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().selected + 1), false);
+            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.ignored", Minecraft.getInstance().player.getInventory().getSelectedSlot() + 1), false);
         }
     }
 
@@ -242,24 +243,24 @@ public abstract class EventHandlerClient
         player.connection.send(new ServerboundContainerClickPacket(
             player.inventoryMenu.containerId,
             player.inventoryMenu.getStateId(),
-            index + 9 * currentIndex,
-            index,
+            (short)(index + 9 * currentIndex),
+            (byte)index,
             ClickType.SWAP,
-            ItemStack.EMPTY,
-            new Int2ObjectOpenHashMap<>()
+            new Int2ObjectOpenHashMap<>(),
+            HashedStack.EMPTY
         ));
     }
 
     public void toggleLockSlot()
     {
-        if(!HotbarSwapper.config.ignoredSlots.removeIf(i -> i == Minecraft.getInstance().player.getInventory().selected))
+        if(!HotbarSwapper.config.ignoredSlots.removeIf(i -> i == Minecraft.getInstance().player.getInventory().getSelectedSlot()))
         {
-            HotbarSwapper.config.ignoredSlots.add(Minecraft.getInstance().player.getInventory().selected);
-            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.add", Minecraft.getInstance().player.getInventory().selected + 1), false);
+            HotbarSwapper.config.ignoredSlots.add(Minecraft.getInstance().player.getInventory().getSelectedSlot());
+            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.add", Minecraft.getInstance().player.getInventory().getSelectedSlot() + 1), false);
         }
         else
         {
-            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.remove", Minecraft.getInstance().player.getInventory().selected + 1), false);
+            Minecraft.getInstance().player.displayClientMessage(Component.translatable("chat.hotbarswapper.ignoreSlots.remove", Minecraft.getInstance().player.getInventory().getSelectedSlot() + 1), false);
         }
         HotbarSwapper.config.save();
     }
@@ -397,7 +398,7 @@ public abstract class EventHandlerClient
             if(isHoldingKey() && HotbarSwapper.config.itemScale > 0D)
             {
                 ArrayList<ItemStack> items = new ArrayList<>();
-                for(int i = 9 * currentIndex; i < player.getInventory().items.size() && i < 9 * (currentIndex + 1); i++)
+                for(int i = 9 * currentIndex; i < player.getInventory().getNonEquipmentItems().size() && i < 9 * (currentIndex + 1); i++)
                 {
                     if(HotbarSwapper.config.ignoredSlots.contains(i - 9 * currentIndex))
                     {
@@ -407,7 +408,7 @@ public abstract class EventHandlerClient
                     {
                         if(currentIndex != 0)
                         {
-                            items.add((!holdingSwapSlotKey || (i - 9 * currentIndex) == player.getInventory().selected) ? player.getInventory().items.get(i) : ItemStack.EMPTY);
+                            items.add((!holdingSwapSlotKey || (i - 9 * currentIndex) == player.getInventory().getSelectedSlot()) ? player.getInventory().getNonEquipmentItems().get(i) : ItemStack.EMPTY);
                         }
                         else
                         {
