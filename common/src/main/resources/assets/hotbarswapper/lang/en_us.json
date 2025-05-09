@@ -1,10 +1,10 @@
 {
   "config.hotbarswapper.prop.swapKeyListen.name": "Swap Hotbar Listened Key",
-  "config.hotbarswapper.prop.swapKeyListen.desc": "Listens to specific key for when it is held. Defaults to sprint if we can't find your specified key.",
+  "config.hotbarswapper.prop.swapKeyListen.desc": "Listens to specific key for when it is held. This is to listen to key binds already registered with the game. If the key cannot be found a warning will be put in the console.",
   "config.hotbarswapper.prop.swapKey.name": "Swap Hotbar Dedicated Key",
   "config.hotbarswapper.prop.swapKey.desc": "Key to hold down and scroll to swap hotbars. Uses the listen key if not set.",
   "config.hotbarswapper.prop.swapSlotListen.name": "Swap Hotbar Slot Listened Key",
-  "config.hotbarswapper.prop.swapSlotListen.desc": "Listens to specific key for when it is held. Defaults to sneak if we can't find your specified key.",
+  "config.hotbarswapper.prop.swapSlotListen.desc": "Listens to specific key for when it is held. This is to listen to key binds already registered with the game. If the key cannot be found a warning will be put in the console.",
   "config.hotbarswapper.prop.swapSlot.name": "Swap Hotbar Slot Dedicated Key",
   "config.hotbarswapper.prop.swapSlot.desc": "Key to hold down and scroll to swap hotbar slot. Uses the listen key if not set.",
   "config.hotbarswapper.prop.requireSwapKeyForSlot.name": "Require Swap Hotbar Key Held To Swap Slot",

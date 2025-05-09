@@ -373,6 +373,7 @@ public abstract class EventHandlerClient
             }
             else
             {
+                //only warn if we can't find it, if it is left blank then intentionally disabling the key
                 HotbarSwapper.LOGGER.warn("Could not find key for swap slot key called \"{}\"!", HotbarSwapper.config.swapSlotListen);
             }
         }
