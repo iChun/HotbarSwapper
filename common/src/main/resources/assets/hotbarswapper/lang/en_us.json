@@ -32,6 +32,8 @@
   "config.hotbarswapper.prop.swapSlotPrev.desc": "Convenience key bind to swap slot with previous slot.",
   "config.hotbarswapper.prop.ignoreSlot.name": "Ignore/Allow Current Slot",
   "config.hotbarswapper.prop.ignoreSlot.desc": "Convenience key bind to ignore or allow a slot.",
+  "config.hotbarswapper.prop.keyBindTimeout.name": "Key Bind Timeout",
+  "config.hotbarswapper.prop.keyBindTimeout.desc": "How long after hitting a swap key does the index cycling time out (in ticks)",
 
   "chat.hotbarswapper.ignoreSlots.add": "[HotbarSwapper] Ignoring slot %s",
   "chat.hotbarswapper.ignoreSlots.remove": "[HotbarSwapper] Allowing slot %s",
