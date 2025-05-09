@@ -58,6 +58,8 @@ public class Config extends ConfigBase
     @Prop(skip = true)
     public KeyBind ignoreSlot = new KeyBind(new KeyMapping("key.hotbarswapper.ignoreSlot", InputConstants.UNKNOWN.getValue(), "key.categories.inventory"), bind -> HotbarSwapper.eventHandlerClient.toggleLockSlot(), null);
 
+    public int keyBindTimeout = 60;
+
 
     public Config()
     {
