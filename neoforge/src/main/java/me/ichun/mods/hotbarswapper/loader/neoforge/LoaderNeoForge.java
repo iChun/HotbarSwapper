@@ -34,7 +34,7 @@ public class LoaderNeoForge extends HotbarSwapper
     @OnlyIn(Dist.CLIENT)
     private void initClient(IEventBus modEventBus, ModContainer container)
     {
-        config = iChunUtil.d().registerConfig(new Config(), modEventBus);
+        config = iChunUtil.d().registerConfig(new Config(), modEventBus, container);
 
         eventHandlerClient = new EventHandlerClientNeoForge();
 
