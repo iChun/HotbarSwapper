@@ -36,6 +36,10 @@ public abstract class EventHandlerClient
     private boolean holdingSwapKey;
     private boolean holdingSwapSlotKey;
 
+    private int lastShift;
+    private Boolean lastIsRow; //yes, a tri-state
+    private int pressTimeout;
+
     private int currentIndex;
 
     private int popTimeout;
@@ -102,16 +106,50 @@ public abstract class EventHandlerClient
                     }
                 }
             }
+
+            if(pressTimeout > 0)
+            {
+                pressTimeout--;
+
+                if(pressTimeout == 0)
+                {
+                    lastShift = 0;
+                    lastIsRow = null;
+                }
+            }
         }
     }
 
 
     public void onKeybindPressed(int index, boolean isRow)
     {
+        if(lastIsRow == null || lastIsRow != isRow)
+        {
+            currentIndex = 0;
+        }
+        else if(lastShift != index) //shifting row/slot but different direction
+        {
+            HotbarSwapper.eventHandlerClient.doSwap(isRow); //swap the same row
+
+            setLast(index, isRow);
+
+            return;
+        }
+
+        setLast(index, isRow);
+
         if(HotbarSwapper.eventHandlerClient.addToIndex(index, isRow) && currentIndex != 0 || HotbarSwapper.eventHandlerClient.addToIndex(index, isRow))
         {
             HotbarSwapper.eventHandlerClient.doSwap(isRow);
         }
+    }
+
+    private void setLast(int index, boolean isRow)
+    {
+        pressTimeout = HotbarSwapper.config.keyBindTimeout;
+
+        lastShift = index;
+        lastIsRow = isRow;
     }
 
     protected boolean onMouseScroll(double scrollX, double scrollY)
